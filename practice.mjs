@@ -26,11 +26,21 @@
 
 
 import {createServer} from 'node:http'
-
+let PORT = 2024;
 let server = createServer((req,res) => {
-  res.end('Hello World');
+  if(req.url == '/'){
+    res.writeHead(200,{'Content-Type':'text/plain'});
+    res.end('Hello World');
+  }
+  else if(req.url == '/about'){
+    res.end('about page')
+  }
+  else{
+    res.writeHead(404,{"Content-Type" : "text/plain"})
+    res.end('404 Not Found')
+  }
 })
 
-server.listen(2024,() => {
-  console.log('this is running on 2024 listen');
+server.listen(PORT,() => {
+  console.log(`Live at : http://localhost:${PORT}`);
 })
