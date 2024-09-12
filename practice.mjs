@@ -170,20 +170,70 @@
 //   console.log(`http://localhost:3000`);
 // })
 
-import { URL } from "url";
+// import { URL } from "url";
+// import { createServer } from "http";
+
+
+// let server = createServer((req,res) => {
+//   const myURL = new URL(`http://localhost:3000`)
+//   console.log(myURL);
+//   console.log(req)
+//   // res.statusCode = 200;  
+//   // res.setHeader("Content-Type" , "text/plain")
+//   res.end('hello World');
+// })
+
+
+// server.listen(3000,() => {
+//   console.log(`http://localhost:3000`);
+// })
+
+
 import { createServer } from "http";
 
 
 let server = createServer((req,res) => {
-  const myURL = new URL(`http://localhost:3000`)
-  // console.log(myURL);
-  console.log(req)
-  // res.statusCode = 200;  
-  // res.setHeader("Content-Type" , "text/plain")
-  res.end('hello World');
+  let parsedUrl = new URL(req.url,`http://${req.headers.host}`)
+
+  res.setHeader("Content-Type" , "application/json")
+
+
+  console.log(`Request Method : ${req.method} \n request URL : ${parsedUrl.pathname}`)
+  if(req.method == 'GET' && parsedUrl.pathname == '/api/data'){
+    res.writeHead(200);
+    res.end(JSON.stringify({message : "Message is Received!!!"}));
+  }
+  else if(req.method == 'POST' && parsedUrl.pathname == '/api/data'){
+    let body = '';
+    req.on('data',chunk => {
+      body += chunk.toString();
+    });
+    req.on('end',() => {
+      const receivedData = JSON.parse(body);
+      res.writeHead(200);
+      res.end(JSON.stringify({message : 'Data Received!',data : receivedData}))
+    })
+  }
+  else if (req.method === 'DELETE' && parsedUrl.pathname === '/api/data') {
+    // Handle DELETE request
+    let body = '';
+    
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+
+    req.on('end', () => {
+      const deleteData = JSON.parse(body);
+      // Simulate a delete operation (you can add real logic here, like removing data from a database)
+      res.writeHead(200);
+      res.end(JSON.stringify({ message: 'Data Deleted!', data: deleteData }));
+    })
+  }
+    else {
+      res.writeHead(404);
+      res.end(JSON.stringify({ message: 'Route not found' }));
+  }
 })
-
-
 server.listen(3000,() => {
   console.log(`http://localhost:3000`);
 })
