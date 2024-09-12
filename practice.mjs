@@ -119,39 +119,71 @@
 // let data = readFileSync('output1.txt','utf8');
 // console.log(data)
 
-import {writeFile} from 'node:fs/promises';
-import { readFile } from 'node:fs/promises';
-import { appendFile } from 'node:fs/promises';
-import { unlink } from 'node:fs/promises';
-async function  writeFileAsync() {
-  try {
-    await writeFile('output3.txt','Hello World3')
-  } catch (error) {
-    console.log(error)
-  } 
-}
-writeFileAsync();
+// import {writeFile} from 'node:fs/promises';
+// import { readFile } from 'node:fs/promises';
+// import { appendFile } from 'node:fs/promises';
+// import { unlink } from 'node:fs/promises';
+// async function  writeFileAsync() {
+//   try {
+//     await writeFile('output3.txt','Hello World3')
+//   } catch (error) {
+//     console.log(error)
+//   } 
+// }
+// writeFileAsync();
 
-async function readFileAsync() {
-  try {
-    let data = await readFile('output3.txt','utf8');
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
+// async function readFileAsync() {
+//   try {
+//     let data = await readFile('output3.txt','utf8');
+//     console.log(data);
+//   } catch (error) {
+//     console.log(error);
+//   }
   
-}
-readFileAsync();
+// }
+// readFileAsync();
 
-async function appendedFileAsync() {
-  try {
-    await appendFile('output3.txt','\n update here');
-  } catch (error) {
-    console.log(error)
-  }
+// async function appendedFileAsync() {
+//   try {
+//     await appendFile('output3.txt','\n update here');
+//   } catch (error) {
+//     console.log(error)
+//   }
   
-}
+// }
 
-appendedFileAsync();
+// appendedFileAsync();
 
-unlink('output1.txt')
+// unlink('output1.txt')
+
+
+// import { createServer } from "node:http";
+
+
+// let server = createServer((req,res) => {
+//   // let parsedUrl = new URL(req.url);
+//   console.log(new URL(req));
+//   res.end('hel')
+// })
+
+// server.listen(3000,() => {
+//   console.log(`http://localhost:3000`);
+// })
+
+import { URL } from "url";
+import { createServer } from "http";
+
+
+let server = createServer((req,res) => {
+  const myURL = new URL(`http://localhost:3000`)
+  // console.log(myURL);
+  console.log(req)
+  // res.statusCode = 200;  
+  // res.setHeader("Content-Type" , "text/plain")
+  res.end('hello World');
+})
+
+
+server.listen(3000,() => {
+  console.log(`http://localhost:3000`);
+})
