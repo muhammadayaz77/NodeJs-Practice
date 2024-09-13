@@ -278,9 +278,77 @@
 //   console.log('data is appended.');
 // })
 
-import {unlink} from 'fs'
+// import {unlink} from 'fs'
 
-unlink('ayaz1.txt',(err) => {
-  if (err) throw err;
-  console.log('data is deleted.')
+// unlink('ayaz1.txt',(err) => {
+//   if (err) throw err;
+//   console.log('data is deleted.')
+// })
+
+import {createServer} from 'node:http';
+
+let server = createServer((req,res) => {
+  let parsedUrl = new URL(req.url,'http://localhost:3000');
+  console.log(`Request Method : ${req.method} , Pathname : ${parsedUrl.pathname}`);
+  res.setHeader('Content-Type' , 'application/json');
+
+  if(req.method == 'GET' && parsedUrl.pathname == '/api/data'){
+    res.writeHead(200);
+    res.end(JSON.stringify({message : 'data is get'}));
+  }
+  else if(req.method == 'POST' && parsedUrl.pathname == '/api/data'){
+    let body = '';
+
+    // Collect data chunks
+    req.on('data', chunk => {
+        body += chunk.toString();
+    });
+
+    // Once data collection is done
+    req.on('end', () => {
+        const receivedData = JSON.parse(body); // Parse the received JSON   
+        res.writeHead(200); // Ensure headers are sent only once
+        res.end(JSON.stringify({ message: 'Data received!', data: receivedData }));
+    });
+  }
+  else if(req.method == 'DELETE' && parsedUrl.pathname == '/api/data'){
+    let body = '';
+
+    // Collect data chunks
+    req.on('data', chunk => {
+        body += chunk.toString();
+    });
+
+    // Once data collection is done
+    req.on('end', () => {
+        const receivedData = JSON.parse(body); // Parse the received JSON   
+        res.writeHead(200); // Ensure headers are sent only once
+        res.end(JSON.stringify({ message: 'Data deleted!', data: receivedData }));
+    });
+  }
+   // PUT request handling (newly added)
+    else if (req.method === 'PUT' && parsedUrl.pathname === '/api/data') {
+        let body = '';
+
+        // Collect data chunks
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
+        // Once data collection is done
+        req.on('end', () => {
+            const updatedData = JSON.parse(body); // Parse the received JSON
+            res.writeHead(200); // Send status 200
+            res.end(JSON.stringify({ message: 'Data updated!', data: updatedData }));
+        });
+    }
+  else{
+    res.writeHead(400);
+    res.end(JSON.stringify({ message: 'Route not found' }));
+
+  }
+})
+let PORT = 3000;
+server.listen(PORT,() => {
+  console.log(`http://localhost:${PORT}`)
 })
