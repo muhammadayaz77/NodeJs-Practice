@@ -189,51 +189,98 @@
 // })
 
 
-import { createServer } from "http";
+// import { createServer } from "http";
 
 
-let server = createServer((req,res) => {
-  let parsedUrl = new URL(req.url,`http://${req.headers.host}`)
+// let server = createServer((req,res) => {
+//   let parsedUrl = new URL(req.url,`http://${req.headers.host}`)
 
-  res.setHeader("Content-Type" , "application/json")
+//   res.setHeader("Content-Type" , "application/json")
 
 
-  console.log(`Request Method : ${req.method} \n request URL : ${parsedUrl.pathname}`)
-  if(req.method == 'GET' && parsedUrl.pathname == '/api/data'){
-    res.writeHead(200);
-    res.end(JSON.stringify({message : "Message is Received!!!"}));
-  }
-  else if(req.method == 'POST' && parsedUrl.pathname == '/api/data'){
-    let body = '';
-    req.on('data',chunk => {
-      body += chunk.toString();
-    });
-    req.on('end',() => {
-      const receivedData = JSON.parse(body);
-      res.writeHead(200);
-      res.end(JSON.stringify({message : 'Data Received!',data : receivedData}))
-    })
-  }
-  else if (req.method === 'DELETE' && parsedUrl.pathname === '/api/data') {
-    // Handle DELETE request
-    let body = '';
+//   console.log(`Request Method : ${req.method} \n request URL : ${parsedUrl.pathname}`)
+//   if(req.method == 'GET' && parsedUrl.pathname == '/api/data'){
+//     res.writeHead(200);
+//     res.end(JSON.stringify({message : "Message is Received!!!"}));
+//   }
+//   else if(req.method == 'POST' && parsedUrl.pathname == '/api/data'){
+//     let body = '';
+//     req.on('data',chunk => {
+//       body += chunk.toString();
+//     });
+//     req.on('end',() => {
+//       const receivedData = JSON.parse(body);
+//       res.writeHead(200);
+//       res.end(JSON.stringify({message : 'Data Received!',data : receivedData}))
+//     })
+//   }
+//   else if (req.method === 'DELETE' && parsedUrl.pathname === '/api/data') {
+//     // Handle DELETE request
+//     let body = '';
     
-    req.on('data', chunk => {
-      body += chunk.toString();
-    });
+//     req.on('data', chunk => {
+//       body += chunk.toString();
+//     });
 
-    req.on('end', () => {
-      const deleteData = JSON.parse(body);
-      // Simulate a delete operation (you can add real logic here, like removing data from a database)
-      res.writeHead(200);
-      res.end(JSON.stringify({ message: 'Data Deleted!', data: deleteData }));
-    })
-  }
-    else {
-      res.writeHead(404);
-      res.end(JSON.stringify({ message: 'Route not found' }));
-  }
-})
-server.listen(3000,() => {
-  console.log(`http://localhost:3000`);
+//     req.on('end', () => {
+//       const deleteData = JSON.parse(body);
+//       // Simulate a delete operation (you can add real logic here, like removing data from a database)
+//       res.writeHead(200);
+//       res.end(JSON.stringify({ message: 'Data Deleted!', data: deleteData }));
+//     })
+//   }
+//     else {
+//       res.writeHead(404);
+//       res.end(JSON.stringify({ message: 'Route not found' }));
+//   }
+// })
+// server.listen(3000,() => {
+//   console.log(`http://localhost:3000`);
+// })
+// import {writeFileSync} from 'node:fs';
+// import { readFileSync } from 'node:fs';
+// writeFileSync('ayaz.txt','ayaz');
+
+// let data = readFileSync('ayaz.txt','utf8');
+// console.log(data)
+
+// import {readFile} from 'node:fs/promises';
+
+// async function readFileAsync() {
+//   try {
+//     let data = await readFile('ayaz.txt','utf8')
+//     console.log(data);
+//   } catch (error) {
+//     console.log(error);
+    
+//   }
+  
+// }
+
+// readFileAsync();
+
+// import {writeFile} from 'node:fs/promises'
+// async function readFileAsync() {
+//   try {
+//     await writeFile('ayaz1.txt','hello world')
+//   } catch (error) {
+//     console.log(error);
+//   }
+  
+// }
+// readFileAsync();
+
+
+// import { appendFile } from "fs";
+
+// appendFile('ayaz.txt','\n update here',(err) => {
+//   if(err) throw err;
+//   console.log('data is appended.');
+// })
+
+import {unlink} from 'fs'
+
+unlink('ayaz1.txt',(err) => {
+  if (err) throw err;
+  console.log('data is deleted.')
 })
